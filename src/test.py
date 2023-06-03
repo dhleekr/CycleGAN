@@ -41,8 +41,11 @@ def main():
                      config['g_input_channels'],
                      **config['generator_kwargs']).to(device)
 
-    g_AB.load_state_dict(torch.load(args.generator_AB)).eval()
-    g_AB.load_state_dict(torch.load(args.generator_BA)).eval()
+    g_AB.load_state_dict(torch.load(args.generator_AB))
+    g_BA.load_state_dict(torch.load(args.generator_BA))
+
+    g_AB.eval()
+    g_BA.eval()
 
     # Inputs & targets memory allocation
     Tensor = torch.cuda.FloatTensor if torch.cuda.is_available() else torch.Tensor
