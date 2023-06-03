@@ -62,10 +62,14 @@ def main():
         num_workers=config['num_workers'],
     )
 
-    if not os.path.exists('results/A'):
-        os.makedirs('results/A')
-    if not os.path.exists('results/B'):
-        os.makedirs('results/B')
+    if not os.path.exists('results/real_A'):
+        os.makedirs('results/real_A')
+    if not os.path.exists('results/real_B'):
+        os.makedirs('results/real_B')
+    if not os.path.exists('results/fake_A'):
+        os.makedirs('results/fake_A')
+    if not os.path.exists('results/fake_B'):
+        os.makedirs('results/fake_B')
 
     for i, batch in enumerate(dataloader):
         real_A = Variable(batch['A'].to(device))
@@ -76,8 +80,10 @@ def main():
         fake_A = 0.5*(g_BA(real_B).data + 1.0)
 
         # Save image files
-        save_image(fake_A, 'results/A/%04d.png' % (i+1))
-        save_image(fake_B, 'results/B/%04d.png' % (i+1))
+        save_image(real_A, 'results/real_A/%04d.png' % (i+1))
+        save_image(real_B, 'results/real_B/%04d.png' % (i+1))
+        save_image(fake_A, 'results/fake_A/%04d.png' % (i+1))
+        save_image(fake_B, 'results/fake_B/%04d.png' % (i+1))
 
         sys.stdout.write('\rGenerated images %04d of %04d' % (i+1, len(dataloader)))
 
