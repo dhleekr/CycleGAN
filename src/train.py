@@ -91,7 +91,6 @@ def main():
     criterion_cycle = torch.nn.L1Loss().to(device)
     criterion_recon = torch.nn.L1Loss().to(device)
 
-    # logger = Logger(config['train_epochs'], len(dataloader))
     wandb.init(
         project='cyclegan',
         entity='dhleekr',

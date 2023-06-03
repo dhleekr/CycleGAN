@@ -1,5 +1,6 @@
 import torch
 import torch.nn as nn
+import torch.nn.functional as F 
 
 
 def weights_init_normal(m):
@@ -103,5 +104,5 @@ class Discriminator(nn.Module):
 
     def forward(self, x):
         x = self.model(x)
-        return x
-        # return F.avg_pool2d(x, x.size()[2:]).view(x.size()[0], -1)
+        # return x
+        return F.avg_pool2d(x, x.size()[2:]).view(x.size()[0], -1)
