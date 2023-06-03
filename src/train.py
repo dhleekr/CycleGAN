@@ -13,6 +13,7 @@ from torch.utils.data import DataLoader
 from torch.autograd import Variable
 import torchvision.transforms as transforms
 import wandb
+from tqdm import tqdm
 
 def load_config(config_name):
     with open(f'./configs/{config_name}.yaml') as f:
@@ -23,7 +24,6 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--data_path', type=str, default='datasets/horse2zebra/')
     parser.add_argument('--gpu_id', type=int, default=0)
-    parser.add_argument('--seed', type=int, default=1)
     parser.add_argument('--config', type=str, default='config')
     args = parser.parse_args()
     print(args)
@@ -104,9 +104,8 @@ def main():
     wandb.watch(d_B)
 
     # Training
-    # for epoch in range(config['train_epochs']):
-    for epoch in range(1):
-        for i, batch in enumerate(dataloader):
+    for epoch in tqdm(range(config['train_epochs'])):
+        for i, batch in tqdm(enumerate(dataloader)):
             real_A = Variable(batch['A'].to(device))
             real_B = Variable(batch['B'].to(device))
             

@@ -12,6 +12,7 @@ if [[ $FILE == "cityscapes" ]]; then
 fi
 
 echo "Specified [$FILE]"
+mkdir ./datasets/
 URL=http://efrosgans.eecs.berkeley.edu/cyclegan/datasets/$FILE.zip
 ZIP_FILE=./datasets/$FILE.zip
 TARGET_DIR=./datasets/$FILE/
