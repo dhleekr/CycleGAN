@@ -1,6 +1,5 @@
 from utils.dataset import ImageDataset
 from utils.lr_scheduler import LambdaLR
-from utils.logger import Logger
 from utils.replaybuffer import ReplayBuffer
 from src.models import Generator, Discriminator
 
@@ -23,7 +22,7 @@ def load_config(config_name):
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--data_path', type=str, default='datasets/horse2zebra/')
-    parser.add_argument('--gpu_id', type=int, default=3)
+    parser.add_argument('--gpu_id', type=int, default=0)
     parser.add_argument('--seed', type=int, default=1)
     parser.add_argument('--config', type=str, default='config')
     args = parser.parse_args()
@@ -161,22 +160,24 @@ def main():
             if i % 10 == 0:
                 print(f'Epoch: {epoch}, Batch: {i}, Loss: {loss_generator.item()}')
 
-            # if wandb.run():
-            #     wandb.log({
-            #         'loss_recon': loss_recon.item(),
-            #         'loss_GAN_AB': loss_GAN_AB.item(),
-            #         'loss_GAN_BA': loss_GAN_BA.item(),
-            #         'loss_cycle': loss_cycle.item(),
-            #         'loss_generator': loss_generator.item(),
-            #         'loss_discriminator_A': loss_discriminator_A.item(),
-            #         'loss_discriminator_B': loss_discriminator_B.item(),
-            #         "real_A": wandb.Image(real_A[0].cpu().detach().numpy()),
-            #         "real_B": wandb.Image(real_B[0].cpu().detach().numpy()),
-            #         "fake_A": wandb.Image(fake_A[0].cpu().detach().numpy()),
-            #         "fake_B": wandb.Image(fake_B[0].cpu().detach().numpy()),
-            #     })
-            # logger.log({'loss_recon': loss_recon, 'loss_GAN_AB': loss_GAN_AB, 'loss_GAN_BA': loss_GAN_BA, 'loss_cycle': loss_cycle, 'loss_generator': loss_generator, 'loss_discriminator_A': loss_discriminator_A, 'loss_discriminator_B': loss_discriminator_B}, 
-            #         images={'real_A': real_A, 'real_B': real_B, 'fake_A': fake_A, 'fake_B': fake_B})
+            log_real_A = real_A[0].cpu().detach().numpy().reshape((config['image_size'], config['image_size'], 3))
+            log_real_B = real_B[0].cpu().detach().numpy().reshape((config['image_size'], config['image_size'], 3))
+            log_fake_A = fake_A[0].cpu().detach().numpy().reshape((config['image_size'], config['image_size'], 3))
+            log_fake_B = fake_B[0].cpu().detach().numpy().reshape((config['image_size'], config['image_size'], 3))
+
+            wandb.log({
+                'loss_recon': loss_recon.item(),
+                'loss_GAN_AB': loss_GAN_AB.item(),
+                'loss_GAN_BA': loss_GAN_BA.item(),
+                'loss_cycle': loss_cycle.item(),
+                'loss_generator': loss_generator.item(),
+                'loss_discriminator_A': loss_discriminator_A.item(),
+                'loss_discriminator_B': loss_discriminator_B.item(),
+                "real_A": wandb.Image(log_real_A),
+                "real_B": wandb.Image(log_real_B),
+                "fake_A": wandb.Image(log_fake_A),
+                "fake_B": wandb.Image(log_fake_B),
+            })
 
         # Update learning rate
         g_lr_scheduler.step()

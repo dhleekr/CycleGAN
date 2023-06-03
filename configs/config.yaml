@@ -1,7 +1,7 @@
 train_epochs: 200
 decay_epoch: 100
-learning_rate: !!float 0.0001
-batch_size: 64
+learning_rate: !!float 0.0002
+batch_size: 16
 image_size: 256
 cropped_size: 256
 lambda: 10

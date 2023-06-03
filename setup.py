@@ -10,6 +10,7 @@ setup(
         'tensorboard',
         'Pillow',
         'numpy',
+        'wandb',
     ],
     python_requires='>=3',
     version='0.1.0',
