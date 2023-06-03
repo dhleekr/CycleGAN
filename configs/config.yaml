@@ -1,0 +1,14 @@
+train_epochs: 200
+decay_epoch: 100
+learning_rate: !!float 0.0001
+batch_size: 64
+image_size: 256
+cropped_size: 256
+lambda: 10
+num_workers: 0
+g_input_channels: 3
+g_output_channels: 3
+d_input_channels: 3
+d_output_channels: 3
+generator_kwargs: {n_residual_blocks: 9}
+discriminator_kwargs: {channels_list: [64, 128, 256, 512], kernel_size: 4}
