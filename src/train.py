@@ -3,6 +3,7 @@ from utils.lr_scheduler import LambdaLR
 from utils.replaybuffer import ReplayBuffer
 from src.models import Generator, Discriminator
 
+import os
 import argparse
 import itertools
 from PIL import Image
@@ -183,10 +184,13 @@ def main():
         d_B_lr_scheduler.step()
 
         # Save checkpoints
-        torch.save(g_AB.state_dict(), 'models/g_AB.pth')
-        torch.save(g_BA.state_dict(), 'models/g_BA.pth')
-        torch.save(d_A.state_dict(), 'models/d_A.pth')
-        torch.save(d_B.state_dict(), 'models/d_B.pth')        
+        if not os.path.exists(f'models_{args.data_path}'):
+            os.makedirs(f'models_{args.data_path}')
+            
+        torch.save(g_AB.state_dict(), f'models_{args.data_path}/g_AB.pth')
+        torch.save(g_BA.state_dict(), f'models_{args.data_path}/g_BA.pth')
+        torch.save(d_A.state_dict(), f'models_{args.data_path}/d_A.pth')
+        torch.save(d_B.state_dict(), f'models_{args.data_path}/d_B.pth')        
 
     wandb.finish()
 

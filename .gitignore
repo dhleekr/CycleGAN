@@ -3,3 +3,6 @@ datasets/
 wandb/
 src/__pycache__/
 utils/__pycache__/
+
+models*
+results*

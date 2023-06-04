@@ -1,5 +1,5 @@
-train_epochs: 200
-decay_epoch: 100
+train_epochs: 50
+decay_epoch: 25
 learning_rate: !!float 0.0002
 batch_size: 8
 image_size: 256

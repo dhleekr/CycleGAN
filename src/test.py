@@ -41,8 +41,8 @@ def main():
                      config['g_input_channels'],
                      **config['generator_kwargs']).to(device)
 
-    g_AB.load_state_dict(torch.load(args.generator_AB))
-    g_BA.load_state_dict(torch.load(args.generator_BA))
+    g_AB.load_state_dict(torch.load(f'models_{args.data_path}/g_AB.pth'))
+    g_BA.load_state_dict(torch.load(f'models_{args.data_path}/g_BA.pth'))
 
     g_AB.eval()
     g_BA.eval()
@@ -62,14 +62,14 @@ def main():
         num_workers=config['num_workers'],
     )
 
-    if not os.path.exists('results/real_A'):
-        os.makedirs('results/real_A')
-    if not os.path.exists('results/real_B'):
-        os.makedirs('results/real_B')
-    if not os.path.exists('results/fake_A'):
-        os.makedirs('results/fake_A')
-    if not os.path.exists('results/fake_B'):
-        os.makedirs('results/fake_B')
+    if not os.path.exists(f'results_{args.data_path}/real_A'):
+        os.makedirs(f'results_{args.data_path}/real_A')
+    if not os.path.exists(f'results_{args.data_path}/real_B'):
+        os.makedirs(f'results_{args.data_path}/real_B')
+    if not os.path.exists(f'results_{args.data_path}/fake_A'):
+        os.makedirs(f'results_{args.data_path}/fake_A')
+    if not os.path.exists(f'results_{args.data_path}/fake_B'):
+        os.makedirs(f'results_{args.data_path}/fake_B')
 
     for i, batch in enumerate(dataloader):
         real_A = Variable(batch['A'].to(device))
@@ -80,10 +80,10 @@ def main():
         fake_A = 0.5*(g_BA(real_B).data + 1.0)
 
         # Save image files
-        save_image(real_A, 'results/real_A/%04d.png' % (i+1))
-        save_image(real_B, 'results/real_B/%04d.png' % (i+1))
-        save_image(fake_A, 'results/fake_A/%04d.png' % (i+1))
-        save_image(fake_B, 'results/fake_B/%04d.png' % (i+1))
+        save_image(real_A, f'results_{args.data_path}/real_A/%04d.png' % (i+1))
+        save_image(real_B, f'results_{args.data_path}/real_B/%04d.png' % (i+1))
+        save_image(fake_A, f'results_{args.data_path}/fake_A/%04d.png' % (i+1))
+        save_image(fake_B, f'results_{args.data_path}/fake_B/%04d.png' % (i+1))
 
         sys.stdout.write('\rGenerated images %04d of %04d' % (i+1, len(dataloader)))
 

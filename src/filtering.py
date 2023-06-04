@@ -15,7 +15,7 @@ def filter_jpg_files(path):
 
 
 if __name__ == '__main__':
-    filter_jpg_files('datasets/horse2zebra/trainA')
-    filter_jpg_files('datasets/horse2zebra/trainB')
-    filter_jpg_files('datasets/horse2zebra/testA')
-    filter_jpg_files('datasets/horse2zebra/testB')
+    filter_jpg_files('datasets/apple2orange/trainA')
+    filter_jpg_files('datasets/apple2orange/trainB')
+    filter_jpg_files('datasets/apple2orange/testA')
+    filter_jpg_files('datasets/apple2orange/testB')
