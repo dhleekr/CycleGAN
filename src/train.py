@@ -90,7 +90,7 @@ def main():
     # Losses
     criterion_GAN = torch.nn.MSELoss().to(device)
     criterion_cycle = torch.nn.L1Loss().to(device)
-    criterion_recon = torch.nn.L1Loss().to(device)
+    criterion_identity = torch.nn.L1Loss().to(device)
 
     wandb.init(
         project='cyclegan',
@@ -111,9 +111,9 @@ def main():
             real_B = Variable(batch['B'].to(device))
             
             # Reconstruction loss
-            recon_A = g_BA(real_A)
-            recon_B = g_AB(real_B)
-            loss_recon = criterion_recon(recon_A, real_A) + criterion_recon(recon_B, real_B)
+            identity_A = g_BA(real_A)
+            identity_B = g_AB(real_B)
+            loss_identity = criterion_identity(identity_A, real_A) + criterion_identity(identity_B, real_B)
 
             # GAN loss
             fake_A = g_BA(real_B)
@@ -129,7 +129,7 @@ def main():
             recovered_B = g_AB(fake_A)
             loss_cycle = criterion_cycle(recovered_A, real_A) + criterion_cycle(recovered_B, real_B)
 
-            loss_generator = loss_recon + loss_GAN_AB + loss_GAN_BA + config['lambda']*loss_cycle
+            loss_generator = loss_identity + loss_GAN_AB + loss_GAN_BA + config['lambda']*loss_cycle
 
             # Update generator
             g_optimizer.zero_grad()
