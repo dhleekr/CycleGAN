@@ -165,7 +165,7 @@ def main():
             log_fake_B = fake_B[0].cpu().detach().numpy().reshape((config['image_size'], config['image_size'], 3))
 
             wandb.log({
-                'loss_recon': loss_recon.item(),
+                'loss_recon': loss_identity.item(),
                 'loss_GAN_AB': loss_GAN_AB.item(),
                 'loss_GAN_BA': loss_GAN_BA.item(),
                 'loss_cycle': loss_cycle.item(),
